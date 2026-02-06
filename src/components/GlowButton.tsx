@@ -18,7 +18,9 @@ export default function GlowButton({
   size = 'md',
   className = '',
 }: GlowButtonProps) {
-  const baseClasses = 'font-semibold rounded-full transition-all duration-300 inline-flex items-center justify-center gap-2';
+
+  const baseClasses =
+    'font-semibold rounded-full transition-all duration-300 inline-flex items-center justify-center gap-2';
 
   const variantClasses = {
     gold: 'bg-gold text-slate-950 hover:glow-gold',
@@ -43,9 +45,28 @@ export default function GlowButton({
     </motion.span>
   );
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (!href) return;
+
+    // smooth scroll for anchors
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   if (href) {
     return (
-      <a href={href} className={classes} target="_blank" rel="noopener noreferrer">
+      <a
+        href={href}
+        onClick={handleClick}
+        className={classes}
+        target={href.startsWith('#') ? undefined : '_blank'}
+        rel="noopener noreferrer"
+      >
         {content}
       </a>
     );
